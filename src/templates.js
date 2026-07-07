@@ -6,8 +6,8 @@ export const TYPE_META = {
 
 export function validateContent(content, requiredItems) {
   if (!content) return false;
-  const numberedLines = content.match(/^\s*\d+[.)]/gm) ?? [];
-  return numberedLines.length >= requiredItems;
+  const headingLines = content.match(/^\s*#{1,6}\s+\S/gm) ?? [];
+  return headingLines.length >= requiredItems;
 }
 
 export function buildIssueBody({ platform, content, attachmentUrls = [], author, threadUrl }) {
