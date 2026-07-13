@@ -1,14 +1,8 @@
 export const TYPE_META = {
-  bug: { issueLabel: 'type: bug', titlePrefix: '[Bug] ', requiredItems: 4 },
-  feature: { issueLabel: 'type: feature', titlePrefix: '[Feature] ', requiredItems: 3 },
-  enhancement: { issueLabel: 'type: enhancement', titlePrefix: '[Enhancement] ', requiredItems: 2 },
+  bug: { issueLabel: 'type: bug', titlePrefix: '[Bug] ' },
+  feature: { issueLabel: 'type: feature', titlePrefix: '[Feature] ' },
+  enhancement: { issueLabel: 'type: enhancement', titlePrefix: '[Enhancement] ' },
 };
-
-export function validateContent(content, requiredItems) {
-  if (!content) return false;
-  const headingLines = content.match(/^\s*#{1,6}\s+\S/gm) ?? [];
-  return headingLines.length >= requiredItems;
-}
 
 export function buildIssueBody({ platform, content, attachmentUrls = [], author, threadUrl }) {
   const lines = [`### 대상 플랫폼\n${platform}`, `### 내용\n${content || '(본문 없음)'}`];

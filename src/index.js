@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { Octokit } from 'octokit';
-import { TYPE_META, buildIssueBody, validateContent } from './templates.js';
+import { TYPE_META, buildIssueBody } from './templates.js';
 import { setThreadForIssue } from './store.js';
 import { startWebhookServer } from './webhook.js';
 
@@ -71,8 +71,6 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 
     if (!issueRef) {
       const meta = TYPE_META[type];
-      if (!validateContent(newMessage.content, meta.requiredItems)) return;
-
       const platform = resolvePlatform(thread);
       const repo = resolveRepo(platform);
 
@@ -124,15 +122,6 @@ client.on('threadCreate', async (thread, newlyCreated) => {
   try {
     const starterMessage = await thread.fetchStarterMessage();
     const meta = TYPE_META[type];
-
-    if (!validateContent(starterMessage?.content, meta.requiredItems)) {
-      await thread.send(
-        `게시글이 가이드라인 형식을 따르지 않아 이슈가 등록되지 않았습니다.\n` +
-          `포스트 가이드라인에 안내된 필수 항목 ${meta.requiredItems}개를 포함해 게시글을 수정해주세요.`,
-      );
-      return;
-    }
-
     const platform = resolvePlatform(thread);
     const repo = resolveRepo(platform);
 
